@@ -16,8 +16,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var buttonPlay: UIButton!
+    let image = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(image)
+        view.backgroundColor = #colorLiteral(red: 0.1607843137, green: 0.1647058824, blue: 0.1882352941, alpha: 1)
         
         verstka()
         player = AVPlayer(url: URL(fileURLWithPath: Bundle.main.path(forResource: "music", ofType: "mp3")!))
@@ -34,13 +38,27 @@ class ViewController: UIViewController {
     
     func verstka(){
         
-        buttonPlay.backgroundColor = .gray
+        slider.snp.makeConstraints { make in
+            make.bottom.equalTo(image).inset(-50)
+            make.left.right.equalToSuperview().inset(40)
+        }
+        
+        buttonPlay.backgroundColor = #colorLiteral(red: 0.1450980392, green: 0.1333333333, blue: 0.1411764706, alpha: 1)
+        buttonPlay.layer.cornerRadius = 50
         buttonPlay.setTitle("Play", for: .normal)
         buttonPlay.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.bottom.equalToSuperview().inset(50)
             make.height.equalTo(100)
             make.width.equalTo(100)
+        }
+        
+        image.image = UIImage(named: "image")
+        image.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalTo(300)
+            make.height.equalTo(300)
+            make.top.equalTo(100)
         }
         
     }
@@ -60,5 +78,9 @@ class ViewController: UIViewController {
         self.label.text = "\(slider.value)"
     }
     
-}
+    
+    
+    
 
+
+}
