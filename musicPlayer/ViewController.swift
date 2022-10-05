@@ -28,12 +28,15 @@ class ViewController: UIViewController {
         
         slider.maximumValue = Float(player.currentItem?.asset.duration.seconds ?? 0)
         
-        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1000), queue: DispatchQueue.main) { time in
-            self.label.text = "\(time.seconds)"
-            self.slider.value = Float(time.seconds)
-            
-        }
-        
+        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1000), queue: DispatchQueue.main) { [self] time in
+                   self.slider.value = Float(time.seconds)
+                   
+                   let time = self.secondsToMinutesAndSeconds(seconds: slider.value)
+                   let timeString = makeTimeString(minutes: time.0, seconds: time.1)
+                   self.label.text = timeString
+                   
+               }
+  
     }
     
     func verstka(){
@@ -41,6 +44,12 @@ class ViewController: UIViewController {
         slider.snp.makeConstraints { make in
             make.bottom.equalTo(image).inset(-50)
             make.left.right.equalToSuperview().inset(40)
+        }
+        
+        label.text = "00 : 00"
+        label.snp.makeConstraints { make in
+            make.top.equalTo(slider).inset(40)
+            make.centerX.equalToSuperview()
         }
         
         buttonPlay.backgroundColor = #colorLiteral(red: 0.1450980392, green: 0.1333333333, blue: 0.1411764706, alpha: 1)
@@ -74,13 +83,27 @@ class ViewController: UIViewController {
     }
     
     @IBAction func sliderAction(_ sender: Any) {
-        player.seek(to: CMTime(seconds: Double(slider.value), preferredTimescale: 1000))
-        self.label.text = "\(slider.value)"
+            player.seek(to: CMTime(seconds: Double(slider.value), preferredTimescale: 1000))
+            
+            let time = secondsToMinutesAndSeconds(seconds: slider.value)
+            let timeString = makeTimeString(minutes: time.0, seconds: time.1)
+            self.label.text = timeString
+        }
+       
+       
+    
+    func secondsToMinutesAndSeconds(seconds: Float) -> (Int, Int) {
+        return ((Int(seconds) % 3600) / 60, ((Int(seconds) % 3600) % 60 ))
     }
-    
-    
-    
-    
 
+    func makeTimeString(minutes: Int, seconds: Int) -> String {
+
+        var timeString = ""
+        timeString += String(format: "%02d", minutes)
+        timeString += " : "
+        timeString += String(format: "%02d", seconds)
+
+        return timeString
+    }
 
 }
