@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var buttonPlay: UIButton!
+    @IBOutlet weak var buttonNextSong: UIButton!
+    @IBOutlet weak var buttonLastSong: UIButton!
     let image = UIImageView()
     
     override func viewDidLoad() {
@@ -52,14 +54,37 @@ class ViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
+        buttonPlay.setImage(UIImage(systemName: "play"), for: .normal)
         buttonPlay.backgroundColor = #colorLiteral(red: 0.1450980392, green: 0.1333333333, blue: 0.1411764706, alpha: 1)
         buttonPlay.layer.cornerRadius = 50
-        buttonPlay.setTitle("Play", for: .normal)
+        buttonPlay.setTitle("", for: .normal)
         buttonPlay.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(50)
             make.height.equalTo(100)
             make.width.equalTo(100)
+        }
+        
+        buttonNextSong.setImage(UIImage(systemName: "forward.end"), for: .normal)
+        buttonNextSong.backgroundColor = #colorLiteral(red: 0.1450980392, green: 0.1333333333, blue: 0.1411764706, alpha: 1)
+        buttonNextSong.layer.cornerRadius = 25
+        buttonNextSong.setTitle("", for: .normal)
+        buttonNextSong.snp.makeConstraints { make in
+            make.left.equalTo(buttonPlay).inset(100)
+            make.bottom.equalToSuperview().inset(75)
+            make.height.equalTo(50)
+            make.width.equalTo(50)
+        }
+        
+        buttonLastSong.setImage(UIImage(systemName: "backward.end"), for: .normal)
+        buttonLastSong.backgroundColor = #colorLiteral(red: 0.1450980392, green: 0.1333333333, blue: 0.1411764706, alpha: 1)
+        buttonLastSong.layer.cornerRadius = 25
+        buttonLastSong.setTitle("", for: .normal)
+        buttonLastSong.snp.makeConstraints { make in
+            make.right.equalTo(buttonPlay).inset(100)
+            make.bottom.equalToSuperview().inset(75)
+            make.height.equalTo(50)
+            make.width.equalTo(50)
         }
         
         image.image = UIImage(named: "image")
@@ -75,10 +100,10 @@ class ViewController: UIViewController {
     @IBAction func playAction(_ sender: Any) {
         if player.timeControlStatus == .playing {
         player.pause()
-            buttonPlay.setTitle("Play", for: .normal)
+            buttonPlay.setImage(UIImage(systemName: "play"), for: .normal)
         } else {
             player.play()
-            buttonPlay.setTitle("Pause", for: .normal)
+            buttonPlay.setImage(UIImage(systemName: "pause"), for: .normal)
         }
     }
     
